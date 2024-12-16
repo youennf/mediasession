@@ -1067,6 +1067,7 @@ interface MediaMetadata {
   attribute DOMString artist;
   attribute DOMString album;
   readonly attribute MediaKind kind;
+  readonly attribute MediaSkippable skippable;
   attribute FrozenArray&lt;object> artwork;
   [SameObject] readonly attribute FrozenArray&lt;ChapterInformation> chapterInfo;
 };
@@ -1076,6 +1077,7 @@ dictionary MediaMetadataInit {
   DOMString artist = "";
   DOMString album = "";
   MediaKind kind = "";
+  Skippable skippable = false;
   sequence&lt;MediaImage> artwork = [];
   sequence&lt;ChapterInformationInit> chapterInfo = [];
 };
@@ -1086,6 +1088,10 @@ enum MediaKind {
   "pregeneric",
   "summary",
   ""
+};
+
+typedef (boolean or MediaSkippableOptions) MediaSkippable;
+dictionary MediaSkippable {
 };
 </pre>
 
@@ -1112,6 +1118,11 @@ enum MediaKind {
 </p>
 
 <p>
+  A {{MediaMetadata}} has an associated <dfn for="MediaMetadata">skippable</dfn>,
+  which is a {{MediaSkippable}}.
+</p>
+
+<p>
   A {{MediaMetadata}} has an associated sequence of <dfn
   for="MediaMetadata">artwork images</dfn>, which is a sequence of type
   {{MediaImage}}. A {{MediaMetadata}} also has has an associated <dfn
@@ -1132,6 +1143,7 @@ enum MediaKind {
     <li>Its <a for=MediaMetadata>artist</a> is the empty string.</li>
     <li>Its <a for=MediaMetadata>album</a> is the empty string.</li>
     <li>Its <a for=MediaMetadata>kind</a> is the empty string.</li>
+    <li>Its <a for=MediaMetadata>skippable</a> is <code>false</code>.</li>
     <li>Its <a for=MediaMetadata title='artwork image'>artwork images</a> length
     is <code>0</code>.</li>
     <li>Its <a for=MediaMetadata>chapter information</a> length is
@@ -1162,6 +1174,10 @@ enum MediaKind {
     <li>
       Set <var>metadata</var>'s {{MediaMetadata/kind}} to
       <var>init</var>'s {{MediaMetadataInit/kind}}.
+    </li>
+    <li>
+      Set <var>metadata</var>'s {{MediaMetadata/skippable}} to
+      <var>init</var>'s {{MediaMetadataInit/skippable}}.
     </li>
     <li>
       Run the <a>convert artwork algorithm</a> with <var>init</var>'s
@@ -1255,6 +1271,11 @@ user agent MUST run the following steps:
   The <dfn attribute for="MediaMetadata">kind</dfn> attribute reflects the
   {{MediaMetadata}}'s <a for=MediaMetadata>kind</a>. On getting, it MUST return
   the {{MediaMetadata}}'s <a for=MediaMetadata>kind</a>.</p>
+
+<p>
+  The <dfn attribute for="MediaMetadata">skippable</dfn> attribute reflects the
+  {{MediaMetadata}}'s <a for=MediaMetadata>skippable</a>. On getting, it MUST return
+  the {{MediaMetadata}}'s <a for=MediaMetadata>skippable</a>.</p>
 
 <p>
   The <dfn attribute for="MediaMetadata">artwork</dfn>
@@ -1355,6 +1376,7 @@ interface ChapterInformation {
   readonly attribute DOMString title;
   readonly attribute double startTime;
   readonly attribute MediaKind kind;
+  readonly attribute MediaSkippable skippable;
   [SameObject] readonly attribute FrozenArray&lt;MediaImage> artwork;
 };
 
@@ -1362,6 +1384,7 @@ dictionary ChapterInformationInit {
   DOMString title = "";
   double startTime = 0;
   MediaKind kind = "";
+  Skippable skippable = false;
   sequence&lt;MediaImage> artwork = [];
 };
 
@@ -1397,6 +1420,12 @@ dictionary ChapterInformationInit {
 </p>
 
 <p>
+  A {{ChapterInformation}} has an associated <dfn
+  for="ChapterInformation">skippable</dfn>
+  which is a {{MediaSkippable}}.
+</p>
+
+<p>
   A {{ChapterInformation}} has an associated list of <dfn
   for="ChapterInformation">
   artwork images</dfn>.
@@ -1423,6 +1452,10 @@ dictionary ChapterInformationInit {
     <li>
       Set <var>chapterInfo</var>'s {{ChapterInformation/kind}} to
       <var>init</var>'s {{ChapterInformationInit/kind}}.
+    </li>
+    <li>
+      Set <var>chapterInfo</var>'s {{ChapterInformation/skippable}} to
+      <var>init</var>'s {{ChapterInformationInit/skippable}}.
     </li>
     <li>
       Let {{ChapterInformationInit/artwork}} be the result of running the
@@ -1457,6 +1490,12 @@ dictionary ChapterInformationInit {
   The <dfn attribute for="ChapterInformation">kind</dfn> attribute reflects the
   {{ChapterInformation}}'s <a for=ChapterInformation>kind</a>. On getting, it
   MUST return the {{ChapterInformation}}'s <a for=ChapterInformation>kind</a>.
+</p>
+
+<p>
+  The <dfn attribute for="ChapterInformation">skippable</dfn> attribute reflects the
+  {{ChapterInformation}}'s <a for=ChapterInformation>skippable</a>. On getting, it
+  MUST return the {{ChapterInformation}}'s <a for=ChapterInformation>skippable</a>.
 </p>
 
 <p>
